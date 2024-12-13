@@ -5,7 +5,6 @@ Created on Tue Jan  5 16:17:46 2021
 
 @author: profinfo
 """
-
 import pygame
 from pygame import Rect
 
@@ -15,10 +14,10 @@ pygame.init()
 ############## Constantes pygame ################
 size = largeur, hauteur = 800, 600
 tsprite = 20 # taille d'un sprite en pixels
-couleur_fond = (10, 10, 10) # gris foncé
-couleur_contour = (0, 0, 100) # bleu foncé
-couleur_bloc_perso = (0,150,100) # bleu-vert
-couleur_blocs_mobiles = (150,0,0) #  rouge un peu foncé
+couleur_fond = ("darkslategrey") # gris foncé
+couleur_contour = ("black") # bleu foncé
+couleur_bloc_perso = ("powderblue") # bleu-vert
+couleur_blocs_mobiles = (150,0,0)
 pos_jeu = 10,10 # position du jeu par rapport à (0,0)
 
 # Le texte

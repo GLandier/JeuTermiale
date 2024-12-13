@@ -16,12 +16,12 @@ def cree_listes(taillex, tailley, nbre):
     nbre : nombre de carrés voulus
     crée deux listes lx et ly de carrés mobiles en début de jeu,
     et les renvoie"""
-    # crée deux listes de blocs mobiles qui apparaissent de facon aleatoire
+    # les blocs apparaissent de facon aleatoir
     lx=[0]*nbre
     ly=[0]*nbre
     for i in range(len(lx)):
-        lx[i]=lx[i]+randint(1,taillex)-1 #valeur aleatoire pour lx
-        ly[i]=ly[i]+randint(1,tailley)-1 #valeur aleatoire pour ly
+        lx[i]=lx[i]+randint(1,taillex)-1
+        ly[i]=ly[i]+randint(1,tailley)-1
     return lx,ly
 
 
@@ -31,28 +31,20 @@ def bouge(taillex,tailley,lx,ly):
     lx,ly : sont des listes remplis des positions des cubes
     permet au carrés mobiles de bouger selon un certzin patern.
     """
-    z=0 # variable qui decide de quelle coté va se deplacé le bloc
     for i in range(len(lx)):
-        if lx[i]>=taillex-1 : # si le bloc touche la ligne droite il est teleporté de l'autre coté
-            lx[i]=1
-        elif lx[i]<=0 : # si le bloc touche la ligne gauche il est teleporté de l'autre coté
-            lx[i]=taillex-2
-        elif z==0: # le bloc va une fois sur deux a droite
-            z=1
-            lx[i]=lx[i]+1
-        elif z==1: # le bloc va une fois sur deux a droite
-            z=0
-            lx[i]=lx[i]-1
-    
-    for i in range(len(ly)):
-        if ly[i]<tailley-1 : # le bloc dessend 
-            ly[i]= ly[i]+1
-        elif ly[i]>=tailley-1: # si le bloc est deja en bas il est teleporté vers la gauche
-            ly[i]= 0
-
-                
+        #les blocs bouges de manière aleatoire
+        if lx[i] <= taillex-2 and lx[i] >= 1: 
+            lx[i]=randint(0,taillex-1)
+        elif lx[i]>taillex-2 :
+            lx[i]=randint(1,taillex)-1#le bloc est trop pret de la ligne droite le cube se teleporte de manire aleatoire
+        elif lx[i]<1 :
+            lx[i]=randint(1,taillex)-1#le bloc est trop pret de la ligne droite le cube se teleporte de manire aleatoire
             
-    
+    for i in range(len(ly)):#le bloc est trop pret de la ligne du bas le cube se teleporte vers le haut
+        if ly[i]<tailley-1:
+            ly[i]=ly[i]+1
+        else:
+            ly[i]=0
     
         
 def collision(lx,ly,x,y):
@@ -62,33 +54,19 @@ def collision(lx,ly,x,y):
     x,y : sont les coordonnées du cube " joueurs "
     Cette fonctiondetecte si le cube "joueur" est au meme coordonné qu' un blocs mobile.
     """
-    indice=-1 #si il n'y a pas de collision renvoyer -1
+    indice=-1
     for i in range(len(lx)):
-        if x==lx[i] and y==ly[i]: #si il n'y a pas de collision renvoyer l'indice lx[i]
-            indice=lx[i] 
+        if x==lx[i] and y==ly[i]:
+            indice=lx[i]
     return indice
-
-
-def actu_listes(taillex,tailley,lx,ly,nbre):
-    """ 
-    taillex, tailley : dimensions de l'écran de jeu
-    lx,ly : sont des listes remplis des positions des cubes
-    permet au carrés mobiles de bouger selon un certzin patern.
-    nbre : nombre de carrés voulus
-    actualise les deux listes lx et ly de carrés mobiles en début de jeu,
-    et les renvoie"""
-    # permet de modifier le nombre de blocs
-    lx.append(randint(0,taillex-1)) #permet de rajouter un bloc a une position aleatoire
-    ly.append(randint(0,tailley-1)) #permet de rajouter un bloc a une position aleatoire
-    return lx,ly
             
 
 ############ Fonction du jeu
 
 def jeu(taillex, tailley):
     """ taillex et tailley sont les dimensions du jeu souhaitées
-    Règles du jeu : Le cube joueur bleu doit éviter les carrés rouges, qui se deplace vers la gauche ou la droite et vers le bas, sion il perd des vies,
-    le joueur gagne un point apres chaque seconde passé en vie et chaque secondes l'ecran deviens plsu petit."""
+    Règles du jeu : Le cube joueur bleu doit éviter les carrés rouges sion il perd des vies,
+    le joueur gagne un point apres chaque seconde passé en vie"""
 
     ###### Initialisation du jeu #######
     nbre= 3#nbre est le nombre de blocs mobile. Il y a autant de cube que
@@ -176,9 +154,6 @@ def jeu(taillex, tailley):
             
             t = 0
             nbre = nbre +1 # chaque seconde le nombre de cub augmente de 1
-            
-            lx,ly=actu_listes(taillex,tailley,lx,ly,nbre) #actualise le jeu en fonction du nombre
-            
             #la taille de l'ecran diminue de 1 a chaqe frame mais ce bloc a taillex=6 et tailley=6
             if taillex>7 and tailley>7 :
                 taillex=taillex-1
@@ -197,6 +172,7 @@ def jeu(taillex, tailley):
             if y>= tailley-1:
                 y=y-1
                 
+            lx,ly=cree_listes(taillex, tailley, nbre)
             bouge(taillex,tailley,lx,ly)# a chaque seconde les carré mobiles bouges
             score = score + 1# le score augmente toute les secondes
             
